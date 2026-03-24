@@ -23,7 +23,7 @@ function WaterTheme({ progress }: { progress: number }) {
         <motion.rect
           x="15" width="130"
           animate={{ y: waterY, height: waterH + 20 }}
-          transition={{ duration: 0.9, ease: 'easeOut' }}
+          transition={{ duration: 1.1, ease: 'linear' }}
           fill="#76E4B8" opacity={0.7}
         />
         {/* Bubble 1 */}
@@ -71,10 +71,10 @@ const STARS = [
 ]
 
 function MoonTheme({ progress }: { progress: number }) {
-  // Shadow moves from covering most of moon → fully off-screen left
-  // progress=0: shadowCx=80 (covers right half → only sliver visible)
-  // progress=1: shadowCx=-70 (fully off → full moon)
-  const shadowCx = 80 - progress * 155
+  // Moon cx=90 r=68, left edge=22. Shadow exits when shadowCx+68=22 → shadowCx=-46
+  // progress=0: shadowCx=110 (crescent visible on left, ~85% shadow)
+  // progress=1: shadowCx=-46 (shadow just exits → full moon)
+  const shadowCx = 110 - progress * 156
   const glowOpacity = progress * 0.3
   const glowR = 58 + progress * 28
 
@@ -116,7 +116,7 @@ function MoonTheme({ progress }: { progress: number }) {
         fill="rgba(180,175,210,0.88)"
         clipPath="url(#moon-clip)"
         animate={{ cx: shadowCx }}
-        transition={{ duration: 0.9, ease: 'easeOut' }}
+        transition={{ duration: 1.1, ease: 'linear' }}
       />
     </svg>
   )
@@ -124,7 +124,7 @@ function MoonTheme({ progress }: { progress: number }) {
 
 // ─── Plant Theme ─────────────────────────────────────────────────
 function PlantTheme({ progress }: { progress: number }) {
-  const stage = progress < 0.2 ? 0 : progress < 0.4 ? 1 : progress < 0.6 ? 2 : progress < 0.8 ? 3 : 4
+  const stage = progress < 0.2 ? 0 : progress < 0.45 ? 1 : progress < 0.65 ? 2 : progress < 0.88 ? 3 : 4
   const CX = 90, BY = 248
 
   const stageEls = [

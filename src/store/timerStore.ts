@@ -104,18 +104,18 @@ export const useTimerStore = create<TimerState>()(
       },
 
       setFocusMinutes(n: number) {
-        const { mode, isRunning } = get()
+        const { mode } = get()
         set({ focusMinutes: n })
-        if (mode === 'focus' && !isRunning) {
-          set({ secondsLeft: n * 60 })
+        if (mode === 'focus') {
+          set({ isRunning: false, secondsLeft: n * 60, minutesElapsed: 0, visualTheme: randomTheme() })
         }
       },
 
       setBreakMinutes(n: number) {
-        const { mode, isRunning } = get()
+        const { mode } = get()
         set({ breakMinutes: n })
-        if (mode === 'break' && !isRunning) {
-          set({ secondsLeft: n * 60 })
+        if (mode === 'break') {
+          set({ isRunning: false, secondsLeft: n * 60, minutesElapsed: 0 })
         }
       },
     }),
@@ -126,6 +126,11 @@ export const useTimerStore = create<TimerState>()(
         focusMinutes: state.focusMinutes,
         breakMinutes: state.breakMinutes,
       }),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.secondsLeft = state.focusMinutes * 60
+        }
+      },
     }
   )
 )
